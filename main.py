@@ -1,23 +1,34 @@
-def sumar(primera_entrada, segunda_entrada):
-    return primera_entrada + segunda_entrada
+def sumar(*entradas):
+    resultado = sum(entradas)
+    return resultado
 
-def restar(primera_entrada, segunda_entrada):
-    return primera_entrada - segunda_entrada
+def restar(*entradas):
+    resultado = entradas[0]
+    for num in entradas[1:]:
+        resultado -= num
+    return resultado
 
-def multiplicar(primera_entrada, segunda_entrada):
-    return primera_entrada * segunda_entrada
+def multiplicar(*entradas):
+    resultado = 1
+    for num in entradas:
+        resultado *= num
+    return resultado
 
-def dividir(primera_entrada, segunda_entrada):
-    if segunda_entrada != 0:
-        return primera_entrada / segunda_entrada
-    else:
-        return "Error: División por cero"
+def dividir(*entradas):
+    resultado = entradas[0]
+    for num in entradas[1:]:
+        if num == 0:
+            return "Error: División por cero"
+        resultado /= num
+    return resultado
 
-def modulo(primera_entrada, segunda_entrada):
-    if segunda_entrada != 0:
-        return primera_entrada % segunda_entrada
-    else:
-        return "Error: Módulo por cero"
+def modulo(*entradas):
+    resultado = entradas[0]
+    for num in entradas[1:]:
+        if num == 0:
+            return "Error: Módulo por cero"
+        resultado %= num
+    return resultado
 
 # Ejecutamos la calculadora solo si este archivo se ejecuta directamente
 if __name__ == "__main__":
@@ -28,27 +39,38 @@ if __name__ == "__main__":
         print("3. Multiplicar")
         print("4. Dividir")
         print("5. Módulo")
-        print("6. Salir")
+        print("6. Expresión personalizada")
+        print("7. Salir")
         
         opcion = input("Ingrese el número de la operación deseada: ")
         
         if opcion in ["1", "2", "3", "4", "5"]:
-            primera_entrada = float(input("Ingresa el primer número: "))
-            segunda_entrada = float(input("Ingresa el segundo número: "))
+            entradas = list(map(float, input("Ingrese los números separados por espacio: ").split()))
+            
+            if len(entradas) < 2:
+                print("Debe ingresar al menos dos números.")
+                continue
             
             if opcion == "1":
-                resultado = sumar(primera_entrada, segunda_entrada)
+                resultado = sumar(*entradas)
             elif opcion == "2":
-                resultado = restar(primera_entrada, segunda_entrada)
+                resultado = restar(*entradas)
             elif opcion == "3":
-                resultado = multiplicar(primera_entrada, segunda_entrada)
+                resultado = multiplicar(*entradas)
             elif opcion == "4":
-                resultado = dividir(primera_entrada, segunda_entrada)
+                resultado = dividir(*entradas)
             elif opcion == "5":
-                resultado = modulo(primera_entrada, segunda_entrada)
+                resultado = modulo(*entradas)
             
             print("El resultado es:", resultado)
         elif opcion == "6":
+            expresion = input("Ingrese la operación que desea realizar (ejemplo: 2 + 4 - 3, 4 * 5 + 1 / 3): ")
+            try:
+                resultado = eval(expresion)
+                print("El resultado es:", resultado)
+            except Exception as e:
+                print("Error en la expresión:", e)
+        elif opcion == "7":
             print("Saliendo de la calculadora.")
             break
         else:
